@@ -28,12 +28,31 @@ Cypress.Commands.add('login', (user, password) => {
   
   // Replace with your app's login page URL
   // or use cy.get('#my-account-button').click() command (or similar) to open a login modal
-  cy.visit('/login')
+  cy.visit('/login');
+  cy.get('#login-button').click();
+  cy.get('input[name="user"]').type(user);
+  cy.get('input[name="password"]').type(password);
+  cy.get('input[name="btnSubmit"][value="Continue"]').click();
+})
 
-  cy.get('input[name="username"]').type(user)
-  cy.get('input[name="password"]').type(password)
-
-  cy.get('form#login').submit()
+Cypress.Commands.add('getAccessToken', (client_id, client_secret) => {
+  cy.log('< Get Token')
+  cy.request({
+    method: 'POST',
+    url: Cypress.env('TOKEN_URL'),
+    body: {
+      grant_type: 'client_credentials',
+      scope: 'openid',
+      client_id,
+      client_secret,
+    },
+    form: true,
+    failOnStatusCode: false
+  }).then((res) => {
+    cy.wrap(res).as('accessTokenResponse')
+    // expect(res.status).to.eq(200)
+  })
+  cy.log('> Get Token')
 })
 
 Cypress.Commands.add('viewportPreset', (size = '') => {

@@ -15,6 +15,13 @@ module.exports = defineConfig({
       */
       // return require('cypress/plugins/index.js')(on, config)
     },
-    baseUrl: 'https://the-internet.herokuapp.com/',
+    baseUrl: 'https://dev.educationdataexchange.gov.bc.ca',
+  },
+  env: {
+    CLIENT_ID: '',
+    CLIENT_SECRET: '',
+    OIDC_ISSUER: '',
+    TOKEN_URL:
+        'https://soam-dev.apps.silver.devops.gov.bc.ca/auth/realms/master/protocol/openid-connect/token'
   },
 })
