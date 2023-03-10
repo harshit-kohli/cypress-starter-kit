@@ -24,27 +24,29 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('login', (user, password) => {
+Cypress.Commands.add('login', () => {
   
   // Replace with your app's login page URL
   // or use cy.get('#my-account-button').click() command (or similar) to open a login modal
   cy.visit('/login');
   cy.get('#login-button').click();
-  cy.get('input[name="user"]').type(user);
-  cy.get('input[name="password"]').type(password);
+  cy.get('input[name="user"]').type(Cypress.env('USER_ID'));
+  cy.get('input[name="password"]').type(Cypress.env('PASSWORD'));
   cy.get('input[name="btnSubmit"][value="Continue"]').click();
 })
 
-Cypress.Commands.add('getAccessToken', (client_id, client_secret) => {
+Cypress.Commands.add('getAccessToken', () => {
   cy.log('< Get Token')
+  cy.log(Cypress.env('CLIENT_ID'))
+  debugger
   cy.request({
     method: 'POST',
     url: Cypress.env('TOKEN_URL'),
     body: {
       grant_type: 'client_credentials',
       scope: 'openid',
-      client_id,
-      client_secret,
+      client_id: Cypress.env('CLIENT_ID') ,
+      client_secret: Cypress.env('CLIENT_SECRET') ,
     },
     form: true,
     failOnStatusCode: false
